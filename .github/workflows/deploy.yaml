@@ -1,0 +1,20 @@
+name: Testing Action
+on: push
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm test
+      - run: npm run build
+      - uses: Obuc/action-deploy-sp@main
+        with:
+          project: SuperImportante
+          url_sp: https://obuc.sharepoint.com/sites/development
+          user: ${{ secrets.USER }}
+          pass: ${{ secrets.PASS }}
+          src_folder: dist/
+          dst_folder: deploy_test/
